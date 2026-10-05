@@ -1,0 +1,934 @@
+/* =====================================================
+   VARIABEL & RESET
+   ===================================================== */
+:root {
+  --primary-color: #035a2d;
+  --secondary-color: #7ec29e;
+  --bg-color: #114311;
+  --bg-landing: #daedd574;
+  --text-color: #465137;
+  --text-color-p: #888;
+  --card-bg: #ffffff;
+  --soft-bg: #f1f7f3;
+  --info-card: #1a3322;
+  --hero-teks: #334438;
+  --border-bottom: #bbb;
+  --font: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font);
+    line-height: 1.3;
+    color: var(--text-color);
+    background-color: var(--soft-bg);
+}
+
+/* =====================================================
+   HEADER & NAVBAR (FLEXBOX)
+   ===================================================== */
+header {
+    background-color:var(--card-bg);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo {
+    border-radius: 50px;
+    max-width: 50px;
+    height: auto;
+}
+
+.logo-text h4 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.logo-text p {
+    font-size: 0.75rem;
+    color: var(--text-color-p);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    list-style: none;
+}
+
+.nav-links > li > a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 5px 0;
+}
+
+.nav-links > li > a:hover {
+    color: var(--primary-color);
+}
+
+/* Dropdown */
+.informasi {
+    position: relative;
+}
+
+.dropdown-info {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    padding: 8px 0;
+    background-color: var(--card-bg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    list-style: none;
+    z-index: 10;
+}
+
+.dropdown-info li a {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.dropdown-info li a:hover {
+    background-color: var(--soft-bg);
+    color: var(--primary-color);
+}
+
+.informasi:hover .dropdown-info,
+.informasi:focus-within .dropdown-info {
+    display: block;
+}
+
+/* Hamburger (disembunyikan di desktop, tampil di media query mobile) */
+.menu-toggle,
+.hamburger {
+    display: none;
+}
+
+/* =====================================================
+   TOMBOL
+   ===================================================== */
+.btn-konsultasi {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--card-bg);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-konsultasi:hover {
+    background-color: var(--bg-color);
+}
+
+button.btn-konsultasi {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* =====================================================
+   HERO (CSS GRID)
+   ===================================================== */
+#Hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                url('../assets/back.jpg') no-repeat center center/cover;
+    min-height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+}
+
+.hero-grid {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin-inline: auto;
+}
+
+/* Kotak kaca (glassmorphism) */
+.hero-glass {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 3px solid rgba(255, 255, 255, 0.40);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.hero-glass .welcome-text {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.hero-glass h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--info-card);
+    line-height: 1.3;
+}
+
+.hero-glass h1 span {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.hero-glass .desc-text {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: var(--hero-teks);
+    line-height: 1.6;
+}
+
+.hero-glass .btn-konsultasi {
+    margin-top: 0;
+    padding: 12px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(3, 90, 45, 0.3);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.hero-glass .btn-konsultasi:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes struk-turun {
+    from { transform: translateY(-50%); }
+    to   { transform: translateY(0); }
+}
+
+.r-item {
+    padding: 0.7rem 0;
+    border-bottom: 1px dashed var(--border-bottom);
+}
+
+.r-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.r-item p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.r-end {
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--border-bottom);
+}
+
+.r-note {
+    padding-top: 0.5rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--border-bottom);
+    border-top: 2px dashed var(--border-bottom);
+}
+
+/* =====================================================
+   FORM & INPUT
+   ===================================================== */
+.chat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+}
+
+input[type="text"],
+textarea,
+select {
+    padding: 0.75rem;
+    border: 2px solid var(--soft-bg);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus state */
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(126, 194, 158, 0.5);
+}
+
+/* =====================================================
+   SECTION LAYANAN & CARD (CSS GRID)
+   ===================================================== */
+#layanan {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 2rem;
+}
+
+.layanan-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.layanan-header h2 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.layanan-header p {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 25px;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-top-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(3, 90, 45, 0.09);
+    border-color: var(--secondary-color);
+}
+
+.card-icon {
+    margin-bottom: 15px;
+    font-size: 2.5rem;
+}
+
+.card-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    color: var(--info-card);
+}
+
+.card-content p {
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+    color: var(--hero-teks);
+    line-height: 1.5;
+}
+
+.card-btn {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--soft-bg);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover .card-btn {
+    background-color: var(--primary-color);
+    color: var(--card-bg);
+    transform: translateX(5px);
+}
+
+/* =====================================================
+   HALAMAN INFORMASI
+   ===================================================== */
+.page-banner {
+    position: relative;
+    padding: 2.5rem 1.5rem;
+    background: var(--primary-color);
+    color: var(--card-bg);
+    text-align: center;
+}
+
+.page-banner h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.info-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 90px;
+}
+
+.info-section h2 {
+    display: inline-block;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.4rem;
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.info-card {
+    padding: 25px;
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.info-card h3 {
+    margin-bottom: 0.8rem;
+    color: var(--info-card);
+}
+
+.info-card ol {
+    padding-left: 1.2rem;
+}
+
+.info-card li {
+    margin-bottom: 0.6rem;
+    line-height: 1.5;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    min-width: 420px;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--soft-bg);
+}
+
+th {
+    background: var(--primary-color);
+    color: var(--card-bg);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.note {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+/* =====================================================
+   HALAMAN MINDICHAT
+   ===================================================== */
+.chat-wrapper {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.chat-box {
+    overflow: hidden;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header {
+    padding: 1rem 1.5rem;
+    background: var(--primary-color);
+    color: var(--card-bg);
+}
+
+.chat-header h2 {
+    font-size: 1.1rem;
+}
+
+.chat-header p {
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    height: 380px;
+    padding: 1.2rem;
+    overflow-y: auto;
+    background: var(--soft-bg);
+}
+
+.msg {
+    max-width: 80%;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.msg.bot {
+    align-self: flex-start;
+    background: var(--card-bg);
+    border: 1px solid #e5e7eb;
+}
+
+.msg.user {
+    align-self: flex-end;
+    background: var(--primary-color);
+    color: var(--card-bg);
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem 0;
+}
+
+.chip {
+    padding: 0.4rem 0.9rem;
+    background: var(--soft-bg);
+    color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+}
+
+.chip:hover {
+    background: var(--secondary-color);
+}
+
+.chat-form {
+    padding: 0.8rem 1.2rem 1.2rem;
+}
+
+.chat-form .row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chat-form input {
+    flex: 1;
+}
+
+.chat-form .btn-konsultasi {
+    margin-top: 0;
+}
+
+/* Tombol kembali (opsional, hapus jika sudah pakai navbar) */
+.back-home {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    color: var(--card-bg);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.back-home:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-3px);
+}
+
+.back-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+.site-footer {
+    margin-top: 3rem;
+    padding: 2rem 1rem;
+    background: var(--primary-color);
+    color: var(--soft-bg);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* =====================================================
+   LANDING PAGE (<body class="landing">)
+   Dibatasi class .landing agar tidak bentrok dengan homepage
+   ===================================================== */
+.landing {
+    background-color: var(--bg-landing);
+    line-height: 1.7;
+}
+
+.landing header {
+    position: static;
+    padding: 4rem 2rem;
+    background: url('../assets/back.jpg') center / cover no-repeat;
+    color: var(--soft-bg);
+    text-align: center;
+    box-shadow: none;
+    text-shadow: 1px 1px 1px #000, 2px 2px 2px #333, 3px 3px 3px #555;
+}
+
+.landing header h1 {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 2.2rem;
+    line-height: 1.4;
+}
+
+.landing nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem;
+    background: #ffffff;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.landing nav a {
+    margin: 0 1.2rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.landing nav a:hover {
+    color: var(--secondary-color);
+}
+
+.landing-title {
+    display: none;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.landing main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+.landing section {
+    margin-bottom: 2.5rem;
+    padding: 2.5rem;
+    background: var(--card-bg);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.landing section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgb(16, 52, 4);
+}
+
+.landing h2 {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+.landing p {
+    margin-bottom: 1rem;
+}
+
+.landing ul {
+    margin-left: 1.5rem;
+}
+
+.landing li {
+    margin-bottom: 0.8rem;
+}
+
+.highlight-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* =====================================================
+   MEDIA QUERY: LAYAR SEDANG (hero jadi satu kolom)
+   ===================================================== */
+@media (max-width: 1100px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        
+    }
+}
+
+/* =====================================================
+   MEDIA QUERY: MOBILE (SATU KOLOM + HAMBURGER)
+   ===================================================== */
+@media (max-width: 768px) {
+
+    /* --- Navbar homepage --- */
+    .navbar {
+        flex-wrap: wrap;
+        padding: 1rem;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .hamburger span {
+        width: 26px;
+        height: 3px;
+        background: var(--primary-color);
+        border-radius: 2px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .menu-toggle:checked + .hamburger span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .menu-toggle:checked + .hamburger span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle:checked + .hamburger span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        width: 100%;
+        margin-top: 0.8rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .menu-toggle:checked ~ .nav-links {
+        display: flex;
+    }
+
+    .nav-links > li > a {
+        display: block;
+        padding: 12px 0;
+    }
+
+    .dropdown-info {
+        position: static;
+        display: block;
+        min-width: 0;
+        padding: 0 0 0 1rem;
+        box-shadow: none;
+    }
+
+    /* --- Hero & struk --- */
+    #Hero {
+        min-height: auto;
+        padding: 2rem 1rem;
+    }
+
+    .hero-glass {
+        padding: 2rem 1.2rem;
+    }
+
+    .receipt-window {
+        height: 240px;
+    }
+
+    /* --- Satu kolom --- */
+    .card-grid,
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #layanan {
+        margin: 40px auto;
+        padding: 0 1rem;
+    }
+
+    .page-content {
+        padding: 1.2rem 1rem;
+    }
+
+    /* --- Chat --- */
+    .chat-form .row {
+        flex-direction: column;
+    }
+
+    .msg {
+        max-width: 90%;
+    }
+
+    /* --- Tombol kembali: hanya panah --- */
+    .back-text {
+        display: none;
+    }
+
+    .back-home {
+        top: 0.8rem;
+        left: 0.8rem;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+    }
+
+    /* --- Landing page --- */
+    .landing header {
+        padding: 2.5rem 1rem;
+    }
+
+    .landing header h1 {
+        font-size: 1.5rem;
+    }
+
+    .landing nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+
+    .landing-title {
+        display: block;
+    }
+
+    .landing-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 0.8rem;
+        border-top: 1px solid var(--soft-bg);
+    }
+
+    .menu-toggle:checked ~ .landing-links {
+        display: flex;
+    }
+
+    .landing nav a {
+        display: block;
+        margin: 0;
+        padding: 12px 0;
+    }
+
+    .landing main {
+        padding: 2rem 1rem;
+    }
+
+    .landing section {
+        padding: 1.5rem;
+    }
+}
+
+/* =====================================================
+   AKSESIBILITAS: matikan animasi bila diminta pengguna
+   ===================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .receipt-track {
+        animation: none;
+        transform: none;
+    }
+
+    .receipt-window {
+        overflow-y: auto;
+    }
+}

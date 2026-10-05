@@ -4,78 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medi-Chat</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="homepage.html">
-                <img src="./assets/logo.png" alt="Medi-Chat Logo">
+        <nav class="navbar">
+            <a href="homepage.html" class="logo-container">
+                <img class="logo" src="assets/logo.png" alt="Medi-Chat Logo">
+                <div class="logo-text">
+                    <h4>Puskesmas</h4>
+                    <p>Sehat pilihan kita</p>
+                </div>
             </a>
-            <ul>
-                <li><a href="#Hero">Home</a></li>
-                <li><a href="">Informasi</a>
-                    <ul>
-                        <li><a href="">Pendaftaran</a></li>
-                        <li><a href="">Jadwal Layanan</a></li>
-                        <li><a href="">Biaya Rawat</a></li>
+            <!-- tampilan menunya humburger -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="hamburger" aria-label="Buka menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <ul class="nav-links">
+                <li class="home"><a href="homepage.html">Home</a></li>
+                <li class="informasi">
+                    <a >Informasi</a>
+                    <ul class="dropdown-info">
+                        <li><a href="page/informasi.html#pendaftaran">Pendaftaran</a></li>
+                        <li><a href="page/informasi.html#jadwal">Jadwal Layanan</a></li>
+                        <li><a href="page/informasi.html#biaya">Biaya Rawat</a></li>
                     </ul>
                 </li>
-                <li><a href="">MINDIChat</a></li>
-                <li><a href="">Tentang Jurnal</a></li>
+                <li class="mindichat"><a href="page/medichat.html">Medichat</a></li>
+                <li class="tentang"><a href="page/landing-page.html">Tentang Jurnal</a></li>
             </ul>
         </nav>
     </header>
-    <Section id="Hero">
-        <p>Selamat datang di</p>
-        <h1>Media Informasi Layanan Kesehatan Puskesmas dan Konsultasi berbasis <span>MINDIChat</span> </h1>
-        <p>MEDI-CHAT hadir untuk memudahkan Anda dalam mendapatkan informasi dan layanan kesehatan di Puskesmas secara tepat, mudah, dan terpercaya</p>
-        <button>
-            <a href="">
-                Mulai Konsultasi
-            </a>
-        </button>
-    </Section>
-    <Section id="layanan">
-        <h3>Layanan Utama</h3>
-        <p>Pilih layanan yang Anda butuhkan untuk mendapatkan Informasi dan bantuan kesehatan dengan mudah dan nyaman</p>
-        <div class="card-grid">
 
-            <!-- card 1 -->
-            <article>
-                <div>
-                    <h3>Prosedur Pendaftaran</h3>
-                    <p>Informasi tata cara pendaftaran pasien di Puskesmas</p>
+    <main>
+        <section id="Hero">
+            <div class="hero-grid">
+                <div class="hero-glass">
+                    <p class="welcome-text">Selamat datang di</p>
+                    <h1>Media Informasi Layanan Kesehatan Puskesmas dan Konsultasi berbasis <span>Medi-Chat</span></h1>
+                    <p class="desc-text">MEDI-CHAT hadir untuk memudahkan Anda dalam mendapatkan informasi dan layanan kesehatan di Puskesmas secara tepat, mudah, dan terpercaya</p>
+                    <a href="page/medichat.html" class="btn-konsultasi">Mulai Konsultasi</a>
                 </div>
-                <button>-></button>
-            </article>
-            <!-- card 2 -->
-            <article>
-                <div>
-                    <h3>Biaya Pengobatan</h3>
-                    <p>Informasi biaya pengobatan untuk pasien baik itu rawat inap dan rawat jalan</p>
-                </div>
-                <button>-></button>
-            </article>
-            <!-- card 3 -->
-            <article>
-                <div>
-                    <h3>Jadwal Layanan</h3>
-                    <p>Informasi layanan di puskesmas, info jadwal layanan, jadwal dokter, dan lain sebagainya</p>
-                </div>
-                <button>-></button>
-            </article>
-            <!-- card 4 -->
-            <article>
-                <div>
-                    <h3>Konsultasi kesehatan</h3>
-                    <p>Layanan konsultasi informasi umum puskesmas dan kesehatan berbasis chat bot admin medis</p>
-                </div>
-                <button>-></button>
-            </article>
-        </div>
+            </div>
+        </section>
+        <section id="layanan">
+            <div class="layanan-header">
+                <h2>Layanan Utama</h2>
+                <p>Pilih layanan yang Anda butuhkan untuk mendapatkan Informasi dan bantuan kesehatan dengan mudah dan nyaman</p>
+            </div>
 
-    </Section>
-    
+            <div class="card-grid">
+                <article class="card">
+                    <div class="card-icon"></div>
+                    <div class="card-content">
+                        <h3>Prosedur Pendaftaran</h3>
+                        <p>Informasi tata cara pendaftaran pasien di Puskesmas</p>
+                    </div>
+                    <a href="page/informasi.html#pendaftaran" class="card-btn" aria-label="Lihat prosedur pendaftaran">→</a>
+                </article>
+                <article class="card">
+                    <div class="card-icon"></div>
+                    <div class="card-content">
+                        <h3>Biaya Pengobatan</h3>
+                        <p>Informasi biaya pengobatan untuk pasien baik itu rawat inap dan rawat jalan</p>
+                    </div>
+                    <a href="page/informasi.html#biaya" class="card-btn" aria-label="Lihat biaya pengobatan">→</a>
+                </article>
+                <article class="card">
+                    <div class="card-icon"></div>
+                    <div class="card-content">
+                        <h3>Jadwal Layanan</h3>
+                        <p>Informasi layanan di puskesmas, info jadwal layanan, jadwal dokter, dan lain sebagainya</p>
+                    </div>
+                    <a href="page/informasi.html#jadwal" class="card-btn" aria-label="Lihat jadwal layanan">→</a>
+                </article>
+                <article class="card">
+                    <div class="card-icon"></div>
+                    <div class="card-content">
+                        <h3>Konsultasi Kesehatan</h3>
+                        <p>Layanan konsultasi informasi umum puskesmas dan kesehatan berbasis chat bot admin medis</p>
+                    </div>
+                    <a href="page/medichat.html" class="card-btn" aria-label="Buka MINDIChat">→</a>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <p>&copy; 2026 Kelompok 3 - Tugas Mata Kuliah Pengembangan Aplikasi Web (TI-501)</p>
+    </footer>
 </body>
 </html>
