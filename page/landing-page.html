@@ -3,31 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tugas PAW - Landing Page Jurnal</title>
+    <title>Landing Page Jurnal</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="landing">
-
-    <!-- Judul landing page di bagian atas halaman -->
     <header>
-        <h1>Optimalisasi Layanan Kesehatan di Puskesmas Melalui Pengembangan Chatbot Berbasis Web Menggunakan Flowise AI</h1>
-    </header>
-        <nav>
-            <input type="checkbox" id="landing-toggle" class="menu-toggle">
-            <label for="landing-toggle" class="hamburger" aria-label="Buka menu">
+        <nav class="navbar">
+            <a href="../homepage.html" class="logo-container">
+                <img class="logo" src="../assets/logo.png" alt="Medi-Chat Logo">
+                <div class="logo-text">
+                    <h4>Puskesmas</h4>
+                    <p>Sehat pilihan kita</p>
+                </div>
+            </a>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="hamburger" aria-label="Buka menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </label>
-            <div class="landing-links">
-                <a href="../homepage.html">Home</a>
-                <a href="#about">About</a>
-                <a href="#kekuatan">Kekuatan</a>
-                <a href="#kekurangan">Kekurangan</a>
-                <a href="#anggota">Anggota Kelompok</a>
-            </div>
+
+            <ul class="nav-links">
+                <li><a href="../homepage.html">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#kekuatan">Kekuatan</a></li>
+                <li><a href="#kekurangan">Kekurangan</a></li>
+                <li><a href="#anggota">Anggota Kelompok</a></li>
+            </ul>
         </nav>
+    </header>
+
     <main>
+        <section class="judul">
+            <h1 class="tentang-jurnal">Optimalisasi Layanan Kesehatan di Puskesmas 
+                <span class="span">Melalui Pengembangan Chatbot Berbasis Web</span>
+                <span class="span">Menggunakan Flowise AI</span></h1>
+        </section>
+
+        <!-- mulai dari sini, section about sampai footer tidak berubah -->
         <section id="about">
             <h2>About / Ringkasan Jurnal</h2>
             <article>
