@@ -234,6 +234,10 @@ button.btn-konsultasi {
     line-height: 1.6;
 }
 
+.desc-text::before{
+    content: "MEDI-CHAT hadir untuk memudahkan Anda dalam mendapatkan informasi dan layanan kesehatan di Puskesmas secara tepat, mudah, dan terpercaya";
+}
+
 .hero-glass .btn-konsultasi {
     margin-top: 0;
     padding: 12px 30px;
@@ -682,6 +686,10 @@ tr:last-child td {
     .landing .span{
         display: block;
     }
+
+    .desc-text::before{
+        content: "MEDI-CHAT hadir untuk memudahkan Anda dalam mendapatkan informasi dan layanan kesehatan di Puskesmas secara tepat, mudah, dan terpercaya";
+    }
 }
 
 /* =====================================================
@@ -753,6 +761,10 @@ tr:last-child td {
         padding: 0 0 0 1rem;
         background: transparent;
         box-shadow: none;
+    }
+
+    .desc-text::before {
+        content: "";
     }
 
     /* --- Satu kolom --- */
