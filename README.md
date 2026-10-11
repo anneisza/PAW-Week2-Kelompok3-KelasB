@@ -1,5 +1,5 @@
 # PAW-Week2-Kelompok3-KelasB
-#### [https://anneisza.github.io/PAW-Week2-Kelompok3-KelasB/](https://anneisza.github.io/PAW-Week2-Kelompok3-KelasB/)
+#### [https://anneisza.github.io/puskesmas/](https://anneisza.github.io/puskesmas/)
 ---
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1e57235a-2d61-46fd-9fd5-39233bcfa1e7" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6146b29a-503b-40a4-8af7-89f20c13dcb2" />
