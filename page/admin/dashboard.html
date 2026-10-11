@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Medi-Chat</title>
+    <link rel="stylesheet" href="../../css/admin.css">
+    <script>
+        // Penjaga halaman (simulasi): sesi disimpan di localStorage, berlaku 2 jam
+        const SESI = 'medichatAdminSession';
+        function sesiOk() {
+            try { const s = JSON.parse(localStorage.getItem(SESI)); return !!s && s.exp > Date.now(); }
+            catch (err) { return false; }
+        }
+        if (sesiOk()) {
+            // perpanjang tiap dashboard dibuka
+            localStorage.setItem(SESI, JSON.stringify({ exp: Date.now() + 2 * 60 * 60 * 1000 }));
+        } else if (sessionStorage.getItem('adminLogin') !== '1') {
+            location.replace('login.html');
+        }
+    </script>
+</head>
+<body class="dashboard">
+    <div class="admin-layout">
+
+        <!-- SIDEBAR (desktop) / BAR MENU BAWAH (mobile) -->
+        <aside class="sidebar">
+            <a href="../../homepage.html" class="brand">
+                <img class="logo" src="../../assets/logo.png" alt="Medi-Chat Logo">
+                <div>
+                    <h4>Medi-Chat</h4>
+                    <p>Panel Admin</p>
+                </div>
+            </a>
+
+            <nav class="side-menu">
+                <button type="button" class="tab active" data-tab="jadwal" title="Jadwal Layanan">
+                    <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span><span class="lbl">Jadwal Layanan</span>
+                </button>
+
+                <button type="button" class="tab" data-tab="biaya" title="Biaya Pengobatan">
+                    <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span><span class="lbl">Biaya Pengobatan</span>
+                </button>
+
+                <button type="button" class="tab" data-tab="Informasi_Puskesmas" title="Informasi Puskesmas">
+                    <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></span><span class="lbl">Informasi Puskesmas</span>
+                </button>
+            </nav>
+
+            <div class="side-foot">
+                <a href="../../homepage.html">Lihat Website</a>
+                <button type="button" class="js-logout">Keluar</button>
+            </div>
+        </aside>
+
+        <!-- KONTEN -->
+        <main class="admin-main">
+
+            <!-- Top bar (hanya tampil di mobile) -->
+            <div class="m-top">
+                <a href="../../homepage.html" class="m-icon" aria-label="Lihat website">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-5v-7H9v7H4a1 1 0 01-1-1z"/></svg>
+                </a>
+                <span class="m-title">Dashboard</span>
+                <button type="button" class="m-icon js-logout" aria-label="Keluar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                </button>
+            </div>
+
+            <div class="admin-top">
+                <div>
+                    <h1 id="judul"></h1>
+                    <p id="deskripsi"></p>
+                </div>
+                <button type="button" class="btn" id="btn-tambah" aria-label="Tambah data">+ Tambah Data</button>
+            </div>
+
+            <section class="stats" id="stats"></section>
+
+            <section class="panel">
+                <div class="table-wrap">
+                    <table>
+                        <thead id="thead"></thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+                <p class="empty" id="empty" hidden>Belum ada data. Klik "Tambah Data".</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- FORM TAMBAH / UBAH -->
+    <dialog id="dlg">
+        <form id="form" class="dlg-form">
+            <h2 id="dlg-title"></h2>
+            <div id="fields"></div>
+            <div class="dlg-actions">
+                <button type="button" class="btn btn-outline" id="batal">Batal</button>
+                <button type="submit" class="btn">Simpan</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        const KEY = 'medichatAdmin_v3';
+        const $ = (id) => document.getElementById(id);
+        const el = (tag, props = {}) => Object.assign(document.createElement(tag), props);
+
+        const KATEGORI = ['Pemeriksaan & Konsultasi Rawat Jalan', 'Visite & Konsultasi Rawat Inap', 'Akomodasi Rawat Inap'];
+        const [RJ, VISITE, AKOMODASI] = KATEGORI;
+
+        const config = {
+            jadwal: {
+                judul: 'Jadwal Layanan',
+                desk: 'Kelola jadwal dokter umum, dokter gigi, dan imunisasi.',
+                fields: [
+                    { key: 'layanan', label: 'Layanan', type: 'text' },
+                    { key: 'dokter', label: 'Nama Dokter', type: 'text' },
+                    { key: 'ruangan', label: 'Ruangan', type: 'text' },
+                    { key: 'hari', label: 'Hari', type: 'text' },
+                    { key: 'jam', label: 'Jam', type: 'text' }
+                ]
+            },
+            biaya: {
+                judul: 'Biaya Pengobatan',
+                desk: 'Kelola tarif rawat jalan dan rawat inap.',
+                fields: [
+                    { key: 'kategori', label: 'Kategori', type: 'select', options: KATEGORI },
+                    { key: 'nama', label: 'Tindakan / Kelas', type: 'text' },
+                    { key: 'tarif', label: 'Tarif (Visite: dr. Spesialis)', type: 'text' },
+                    { key: 'umum', label: 'Tarif dr. Umum', type: 'text', only: VISITE },
+                    { key: 'cito', label: 'Cito/Libur dr. Spesialis', type: 'text', only: VISITE }
+                ]
+            },
+            Informasi_Puskesmas: {
+                judul: 'Informasi Puskesmas',
+                desk: 'Kelola info terbaru Puskesmas.',
+                fields: [
+                    { key: 'judul', label: 'Judul', type: 'text' },
+                    { key: 'tanggal', label: 'Tanggal', type: 'date' },
+                    { key: 'isi', label: 'Isi Pengumuman', type: 'textarea' }
+                ]
+            }
+        };
+
+        const defaults = {
+            jadwal: [
+                { id: 1, layanan: 'Dokter Umum', dokter: 'dr. Andi Pratama', ruangan: 'Poli Umum', hari: 'Senin - Sabtu', jam: '08.00 - 14.00' },
+                { id: 2, layanan: 'Dokter Gigi', dokter: 'drg. Siti Rahma', ruangan: 'Poli Gigi', hari: 'Senin - Kamis', jam: '08.00 - 12.00' },
+                { id: 3, layanan: 'Imunisasi', dokter: 'dr. Budi Santoso', ruangan: 'Ruang KIA', hari: 'Rabu', jam: '08.00 - 11.00' }
+            ],
+            biaya: [
+                [RJ, 'Pemeriksaan Dokter Spesialis', 'Rp 90.000'],
+                [RJ, 'Pemeriksaan Dokter Umum', 'Rp 73.000'],
+                [RJ, 'Pemeriksaan Dokter Gigi', 'Rp 75.000'],
+                [RJ, 'Pemeriksaan Dokter Umum IGD', 'Rp 110.000'],
+                [RJ, 'Konsultasi Spesialis IGD', 'Rp 52.000'],
+                [RJ, 'Konsultasi Dokter Spesialis', 'Rp 90.000'],
+                [RJ, 'Konsultasi VCT', 'Rp 82.000'],
+                [RJ, 'Konseling Narkoba', 'Rp 95.000'],
+                [RJ, 'Konsultasi Gizi dengan Komplikasi', 'Rp 28.000'],
+                [RJ, 'Konsultasi Gizi', 'Rp 22.000'],
+                [RJ, 'Asesmen Gizi', 'Rp 25.000'],
+                [RJ, 'Asesmen Keperawatan', 'Rp 25.000'],
+                [VISITE, 'Kelas I', 'Rp 42.000', 'Rp 25.000', 'Rp 63.000'],
+                [VISITE, 'Kelas II', 'Rp 42.000', 'Rp 25.000', 'Rp 63.000'],
+                [VISITE, 'Kelas III', 'Rp 42.000', 'Rp 25.000', 'Rp 63.000'],
+                [VISITE, 'VIP', 'Rp 150.000', 'Rp 50.000', 'Rp 225.000'],
+                [VISITE, 'ICU/NICU', 'Rp 150.000', 'Rp 50.000', 'Rp 225.000'],
+                [VISITE, 'Isolasi / Intermediet', 'Rp 42.000', 'Rp 25.000', 'Rp 63.000'],
+                [AKOMODASI, 'VIP', 'Rp 435.000'],
+                [AKOMODASI, 'Kelas I', 'Rp 250.000'],
+                [AKOMODASI, 'Kelas II', 'Rp 185.000'],
+                [AKOMODASI, 'Kelas III', 'Rp 140.000'],
+                [AKOMODASI, 'ICU/NICU', 'Rp 445.000'],
+                [AKOMODASI, 'Isolasi / Intermediet', 'Rp 325.000'],
+                [AKOMODASI, 'One Day Care', 'Rp 250.000']
+            ].map(([kategori, nama, tarif, umum = '', cito = ''], i) => ({ id: i + 1, kategori, nama, tarif, umum, cito })),
+            Informasi_Puskesmas: [
+                { id: 1, judul: 'Imunisasi Anak', tanggal: '2026-10-07', isi: 'Imunisasi anak setiap hari Rabu, 08.00 - 11.00' },
+                { id: 2, judul: 'Poli Gigi', tanggal: '2026-10-08', isi: 'Poli gigi libur pada tanggal merah' }
+            ]
+        };
+
+        let data;
+        let tab = 'jadwal';
+        let editId = null;
+
+        function muat() {
+            const base = JSON.parse(JSON.stringify(defaults));
+            try {
+                const s = localStorage.getItem(KEY);
+                data = s ? { ...base, ...JSON.parse(s) } : base;
+            } catch (err) {
+                data = base;
+            }
+        }
+
+        function simpan() {
+            try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (err) {}
+        }
+
+        function render() {
+            const c = config[tab];
+            $('judul').textContent = c.judul;
+            $('deskripsi').textContent = c.desk;
+
+            // Kartu statistik
+            const stats = $('stats');
+            stats.replaceChildren();
+            Object.keys(config).forEach((k) => {
+                const card = el('div', { className: 'stat' + (k === tab ? ' aktif' : '') });
+                card.append(
+                    el('span', { className: 'stat-angka', textContent: data[k].length }),
+                    el('span', { className: 'stat-label', textContent: config[k].judul })
+                );
+                stats.append(card);
+            });
+
+            // Header tabel
+            const trh = el('tr');
+            c.fields.forEach((f) => trh.append(el('th', { textContent: f.label })));
+            trh.append(el('th', { textContent: 'Aksi' }));
+            $('thead').replaceChildren(trh);
+
+            // Isi tabel (biaya diurutkan per kategori)
+            const list = tab === 'biaya'
+                ? [...data.biaya].sort((a, b) => KATEGORI.indexOf(a.kategori) - KATEGORI.indexOf(b.kategori))
+                : data[tab];
+
+            const rows = list.map((item) => {
+                const tr = el('tr');
+                c.fields.forEach((f) => {
+                    const val = item[f.key] || '';
+                    const td = el('td', { textContent: val || '-' });
+                    if (!val) td.classList.add('kosong');
+                    td.dataset.label = f.label; // dipakai CSS saat tabel jadi kartu di mobile
+                    tr.append(td);
+                });
+
+                const aksi = el('td', { className: 'aksi' });
+                const ubah = el('button', { type: 'button', className: 'btn-sm ubah', textContent: 'Ubah' });
+                const hapus = el('button', { type: 'button', className: 'btn-sm hapus', textContent: 'Hapus' });
+                ubah.addEventListener('click', () => bukaForm(item.id));
+                hapus.addEventListener('click', () => hapusData(item.id));
+                aksi.append(ubah, hapus);
+
+                tr.append(aksi);
+                return tr;
+            });
+            $('tbody').replaceChildren(...rows);
+            $('empty').hidden = rows.length > 0;
+        }
+
+        function bukaForm(id = null) {
+            editId = id;
+            const c = config[tab];
+            const item = id ? data[tab].find((d) => d.id === id) : {};
+
+            $('dlg-title').textContent = (id ? 'Ubah ' : 'Tambah ') + c.judul;
+
+            const wrap = $('fields');
+            wrap.replaceChildren();
+            c.fields.forEach((f) => {
+                const box = el('div', { className: 'field' });
+                const lab = el('label', { htmlFor: 'f-' + f.key, textContent: f.label });
+                let input;
+                if (f.type === 'select') {
+                    input = el('select');
+                    f.options.forEach((o) => input.append(new Option(o, o)));
+                } else if (f.type === 'textarea') {
+                    input = el('textarea', { rows: 3 });
+                } else {
+                    input = el('input', { type: f.type });
+                }
+                input.id = 'f-' + f.key;
+                input.required = true;
+                if (item[f.key]) input.value = item[f.key];
+                box.append(lab, input);
+                wrap.append(box);
+            });
+
+            // Field khusus kategori tertentu (kolom Visite hanya muncul kalau kategori Visite)
+            const kat = $('f-kategori');
+            const atur = () => c.fields.forEach((f) => {
+                if (!f.only) return;
+                const tampil = kat.value === f.only;
+                const n = $('f-' + f.key);
+                n.closest('.field').style.display = tampil ? '' : 'none';
+                n.required = tampil;
+            });
+            if (kat) {
+                kat.addEventListener('change', atur);
+                atur();
+            }
+
+            $('dlg').showModal();
+        }
+
+        function hapusData(id) {
+            if (!confirm('Hapus data ini?')) return;
+            data[tab] = data[tab].filter((d) => d.id !== id);
+            simpan();
+            render();
+        }
+
+        // Pindah tab
+        document.querySelectorAll('.tab').forEach((b) => {
+            b.addEventListener('click', () => {
+                tab = b.dataset.tab;
+                document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('active', x === b));
+                render();
+            });
+        });
+
+        $('btn-tambah').addEventListener('click', () => bukaForm());
+        $('batal').addEventListener('click', () => $('dlg').close());
+
+        $('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const baru = {};
+            config[tab].fields.forEach((f) => {
+                const n = $('f-' + f.key);
+                baru[f.key] = n.closest('.field').style.display === 'none' ? '' : n.value.trim();
+            });
+
+            if (editId) {
+                const i = data[tab].findIndex((d) => d.id === editId);
+                data[tab][i] = { id: editId, ...baru };
+            } else {
+                data[tab].push({ id: Date.now(), ...baru });
+            }
+            simpan();
+            render();
+            $('dlg').close();
+        });
+
+        // Keluar (tombol di sidebar desktop dan di top bar mobile)
+        document.querySelectorAll('.js-logout').forEach((b) => {
+            b.addEventListener('click', () => {
+                localStorage.removeItem(SESI);
+                sessionStorage.removeItem('adminLogin');
+                location.href = 'login.html';
+            });
+        });
+
+        muat();
+        simpan();
+        render();
+    </script>
+</body>
+</html>

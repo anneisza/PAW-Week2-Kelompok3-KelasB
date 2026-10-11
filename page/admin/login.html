@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Staf - Medi-Chat</title>
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body class="login-page">
+    <main class="login-wrap">
+        <div class="login-glass">
+            <a href="../../homepage.html" class="brand brand-center">
+                <img class="logo" src="../../assets/logo.png" alt="Medi-Chat Logo">
+                <div>
+                    <h4>Medi-Chat</h4>
+                    <p>Sehat pilihan kita</p>
+                </div>
+            </a>
+
+            <h1>Login Staf</h1>
+            <p class="sub">Khusus admin dan petugas Puskesmas</p>
+
+            <form id="login-form" class="form">
+                <label for="user">Username</label>
+                <input type="text" id="user" autocomplete="username" placeholder="Masukkan username" required>
+
+                <label for="pass">Password</label>
+                <input type="password" id="pass" autocomplete="current-password" placeholder="Masukkan password" required>
+
+                <p class="error" id="error" role="alert" hidden>Username atau password salah.</p>
+
+                <button type="submit" class="btn">Masuk</button>
+            </form>
+
+            <a href="../../homepage.html" class="back-link">← Kembali ke website</a>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const user = document.getElementById('user').value.trim();
+            const pass = document.getElementById('pass').value;
+
+            if (user === 'admin' && pass === 'admin123') {
+                sessionStorage.setItem('adminLogin', '1');
+                localStorage.setItem('medichatAdminSession', JSON.stringify({ exp: Date.now() + 2 * 60 * 60 * 1000 }));
+                location.href = 'dashboard.html';
+            } else {
+                document.getElementById('error').hidden = false;
+            }
+        });
+    </script>
+</body>
+</html>

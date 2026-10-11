@@ -586,6 +586,20 @@ tr:last-child td {
     font-size: 0.9rem;
 }
 
+.site-footer .staf-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--soft-bg);
+    font-size: 0.8rem;
+    opacity: 0.7;
+    text-decoration: none;
+}
+
+.site-footer .staf-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
 /* =====================================================
    LANDING PAGE (<body class="landing">)
    Navbar memakai gaya header yang sama dengan halaman lain
